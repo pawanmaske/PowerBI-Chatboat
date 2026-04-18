@@ -2,16 +2,21 @@ import streamlit as st
 import streamlit_authenticator as stauth
 
 # user details
-names = ["Pawan", "Friend"]
-usernames = ["pawan", "friend"]
-passwords = ["1234", "abcd"]
-
-hashed_passwords = stauth.Hasher(passwords).generate()
+credentials = {
+    "usernames": {
+        "pawan": {
+            "name": "Pawan",
+            "password": "1234"
+        },
+        "friend": {
+            "name": "Friend",
+            "password": "abcd"
+        }
+    }
+}
 
 authenticator = stauth.Authenticate(
-    names,
-    usernames,
-    hashed_passwords,
+    credentials,
     "chatbot_cookie",
     "abc123",
     cookie_expiry_days=1
