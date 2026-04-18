@@ -1,6 +1,5 @@
 from transformers import pipeline
 
-@st.cache_resource
 def load_model():
     return pipeline("text-generation", model="gpt2")
 
