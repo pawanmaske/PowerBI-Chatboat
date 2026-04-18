@@ -18,9 +18,14 @@ if query:
 
     result = query_hf(prompt)
 
-    try:
+    # 🔍 Debug: show response (temporary)
+    # st.write(result)
+
+    if isinstance(result, list) and "generated_text" in result[0]:
         answer = result[0]["generated_text"]
-    except:
-        answer = "Model loading... try again"
+    elif isinstance(result, dict) and "error" in result:
+        answer = "Model is loading... please try again in few seconds"
+    else:
+        answer = "Unexpected response. Try again."
 
     st.write("Answer:", answer)
