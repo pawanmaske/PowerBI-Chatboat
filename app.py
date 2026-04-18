@@ -1,26 +1,42 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 
-names = ["Pawan", "Friend"]
-usernames = ["pawan", "friend"]
-passwords = ["1234", "abcd"]
+# --- Simple credentials ---
+USER_DB = {
+    "pawan": "1234",
+    "friend": "abcd"
+}
 
-hashed_passwords = stauth.Hasher(passwords).generate()
+# --- Session state init ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "username" not in st.session_state:
+    st.session_state.username = None
 
-authenticator = stauth.Authenticate(
-    names,
-    usernames,
-    hashed_passwords,
-    "chatbot_cookie",
-    "abcdef",
-    cookie_expiry_days=1
-)
+# --- Login UI ---
+def login_ui():
+    st.title("Login 🔐")
 
-name, authentication_status, username = authenticator.login("Login", "main")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-if authentication_status:
+    if st.button("Login"):
+        if username in USER_DB and USER_DB[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success("Login successful")
+            st.rerun()
+        else:
+            st.error("Invalid username or password")
+
+# --- App UI ---
+def app_ui():
     st.title("Power BI Assistant 🤖")
-    st.write(f"Welcome {name}")
+    st.write(f"Welcome {st.session_state.username}")
+
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        st.rerun()
 
     query = st.text_input("Ask your question:")
 
@@ -28,8 +44,8 @@ if authentication_status:
         st.write("You asked:", query)
         st.write("Answer: Coming soon...")
 
-elif authentication_status == False:
-    st.error("Wrong username/password")
-
-elif authentication_status == None:
-    st.warning("Please login")
+# --- Main ---
+if not st.session_state.logged_in:
+    login_ui()
+else:
+    app_ui()
