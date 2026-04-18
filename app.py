@@ -1,40 +1,41 @@
 import requests
 import streamlit as st
 
-API_URL = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
-headers = {"Authorization": "Bearer hf_xxxxxxxxxxxxxxxxx"}  # your token
+# HF OpenAI-compatible endpoint
+API_URL = "https://api-inference.huggingface.co/v1/chat/completions"
 
-def query_hf(prompt):
+# your token
+HEADERS = {
+    "Authorization": "Bearer hf_xxxxxxxxxxxxxxxxx",
+    "Content-Type": "application/json"
+}
+
+def ask_ai(user_query):
     payload = {
-        "inputs": prompt,
-        "parameters": {"max_new_tokens": 100}
+        "model": "mistralai/Mistral-7B-Instruct-v0.2",
+        "messages": [
+            {"role": "system", "content": "You are a Power BI expert. Answer clearly with examples."},
+            {"role": "user", "content": user_query}
+        ],
+        "max_tokens": 200
     }
 
     try:
-        response = requests.post(API_URL, headers=headers, json=payload)
+        res = requests.post(API_URL, headers=HEADERS, json=payload, timeout=30)
 
-        if response.status_code != 200:
-            return {"error": f"API Error: {response.status_code} - {response.text}"}
+        if res.status_code != 200:
+            return f"API Error {res.status_code}: {res.text}"
 
-        return response.json()
+        data = res.json()
+        return data["choices"][0]["message"]["content"]
 
     except Exception as e:
-        return {"error": str(e)}
+        return f"Error: {str(e)}"
 
 st.title("Power BI Assistant 🤖")
 
 query = st.text_input("Ask your question:")
 
 if query:
-    prompt = f"You are a Power BI expert. Answer clearly:\n{query}"
-
-    result = query_hf(prompt)
-
-    if isinstance(result, list) and "generated_text" in result[0]:
-        answer = result[0]["generated_text"]
-    elif isinstance(result, dict) and "error" in result:
-        answer = result["error"]
-    else:
-        answer = "Model loading... try again"
-
+    answer = ask_ai(query)
     st.write("Answer:", answer)
