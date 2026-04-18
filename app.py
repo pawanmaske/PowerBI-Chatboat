@@ -1,18 +1,21 @@
 import requests
 import streamlit as st
 
-API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
+API_URL = "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct"
 headers = {"Authorization": "Bearer hf_xxxxxxxxxxxxxxxxx"}  # your token
 
 def query_hf(prompt):
-    payload = {"inputs": prompt}
-    
+    payload = {
+        "inputs": prompt,
+        "parameters": {"max_new_tokens": 100}
+    }
+
     try:
         response = requests.post(API_URL, headers=headers, json=payload)
-        
+
         if response.status_code != 200:
-            return {"error": f"API Error: {response.status_code}"}
-        
+            return {"error": f"API Error: {response.status_code} - {response.text}"}
+
         return response.json()
 
     except Exception as e:
