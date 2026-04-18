@@ -1,12 +1,9 @@
-from transformers import pipeline
+import streamlit as st
 
-def load_model():
-    return pipeline("text-generation", model="gpt2")
-
-chatbot = load_model()
+st.title("Power BI Assistant 🤖")
 
 query = st.text_input("Ask your question:")
 
 if query:
-    response = chatbot(query, max_length=100)
-    st.write("Answer:", response[0]['generated_text'])
+    st.write("You asked:", query)
+    st.write("Answer: Working fine 👍")
