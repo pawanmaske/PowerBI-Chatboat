@@ -1,27 +1,22 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 
-credentials = {
-    "usernames": {
-        "pawan": {
-            "name": "Pawan",
-            "password": "1234"
-        },
-        "friend": {
-            "name": "Friend",
-            "password": "abcd"
-        }
-    }
-}
+names = ["Pawan", "Friend"]
+usernames = ["pawan", "friend"]
+passwords = ["1234", "abcd"]
+
+hashed_passwords = stauth.Hasher(passwords).generate()
 
 authenticator = stauth.Authenticate(
-    credentials,
+    names,
+    usernames,
+    hashed_passwords,
     "chatbot_cookie",
-    "abc123",
+    "abcdef",
     cookie_expiry_days=1
 )
 
-name, authentication_status, username = authenticator.login()
+name, authentication_status, username = authenticator.login("Login", "main")
 
 if authentication_status:
     st.title("Power BI Assistant 🤖")
