@@ -15,7 +15,7 @@ headers = {
 def ask_ai(prompt):
     try:
         payload = {
-            "model": "mistralai/mistral-7b-instruct:free",
+            "model": "openchat/openchat-3.5-0106:free",  # ✅ only this changed
             "messages": [
                 {"role": "system", "content": "You are a Power BI expert."},
                 {"role": "user", "content": prompt}
