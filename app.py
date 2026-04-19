@@ -17,12 +17,12 @@ headers = {
 def ask_ai(prompt):
     try:
         payload = {
-            "model": "openchat/openchat-3.5-0106:free",  # working free model
-            "messages": [
-                {"role": "system", "content": "You are a Power BI expert. Answer clearly with examples."},
-                {"role": "user", "content": prompt}
-            ]
-        }
+    "model": "meta-llama/llama-3-8b-instruct:free",  # ✅ updated
+    "messages": [
+        {"role": "system", "content": "You are a Power BI expert."},
+        {"role": "user", "content": prompt}
+    ]
+}
 
         response = requests.post(API_URL, headers=headers, json=payload)
 
