@@ -3,7 +3,7 @@ import requests
 
 st.title("Power BI Assistant 🤖")
 
-API_URL = "https://openrouter.ai/api/v1/chat/completions"
+API_URL = "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"
 
 headers = {
     "Authorization": "Bearer sk-or-v1-xxxxxxxxxxxxxxxx",  # your key
