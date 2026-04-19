@@ -1,36 +1,26 @@
 import requests
 import streamlit as st
 
-# HF OpenAI-compatible endpoint
-API_URL = "https://api-inference.huggingface.co/v1/chat/completions"
+API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-# your token
-HEADERS = {
-    "Authorization": "Bearer hf_xxxxxxxxxxxxxxxxx",
+headers = {
+    "Authorization": "Bearer sk-or-v1-xxxxxxxxxxxxxxxx",
     "Content-Type": "application/json"
 }
 
-def ask_ai(user_query):
+def ask_ai(prompt):
     payload = {
-        "model": "mistralai/Mistral-7B-Instruct-v0.2",
+        "model": "mistralai/mistral-7b-instruct:free",
         "messages": [
-            {"role": "system", "content": "You are a Power BI expert. Answer clearly with examples."},
-            {"role": "user", "content": user_query}
-        ],
-        "max_tokens": 200
+            {"role": "system", "content": "You are a Power BI expert. Answer clearly."},
+            {"role": "user", "content": prompt}
+        ]
     }
 
-    try:
-        res = requests.post(API_URL, headers=HEADERS, json=payload, timeout=30)
+    response = requests.post(API_URL, headers=headers, json=payload)
+    data = response.json()
 
-        if res.status_code != 200:
-            return f"API Error {res.status_code}: {res.text}"
-
-        data = res.json()
-        return data["choices"][0]["message"]["content"]
-
-    except Exception as e:
-        return f"Error: {str(e)}"
+    return data["choices"][0]["message"]["content"]
 
 st.title("Power BI Assistant 🤖")
 
