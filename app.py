@@ -9,8 +9,9 @@ if user_input:
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
-            "model": "llama3",
-            "prompt": user_input
+            "model": "llama3",   # make sure this model is installed
+            "prompt": user_input,
+            "stream": False
         }
     )
 
