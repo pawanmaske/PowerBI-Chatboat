@@ -18,9 +18,17 @@ if user_input:
         json={"inputs": user_input}
     )
 
-    result = response.json()
-
-    if isinstance(result, list):
-        st.write(result[0]["generated_text"])
+    # 🔥 SAFE HANDLING
+    if response.status_code != 200:
+        st.error(f"Error: {response.text}")
     else:
-        st.write(result)
+        try:
+            result = response.json()
+            
+            if isinstance(result, list):
+                st.write(result[0]["generated_text"])
+            else:
+                st.write(result)
+
+        except:
+            st.error("Model is loading... Please try again in a few seconds ⏳")
