@@ -3,7 +3,7 @@ import requests
 
 st.title("Power BI Assistant 🤖")
 
-API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
+API_URL = "https://api-inference.huggingface.co/models/gpt2"
 
 headers = {
     "Authorization": f"Bearer {st.secrets['HUGGINGFACE_API_KEY']}"
@@ -25,9 +25,9 @@ if user_input:
             result = response.json()
 
             if isinstance(result, list):
-                st.write(result[0].get("generated_text", "No response"))
+                st.write(result[0]["generated_text"])
             else:
                 st.write(result)
 
         except:
-            st.warning("⏳ Model loading... please try again in 10 seconds")
+            st.error("Model loading... try again ⏳")
