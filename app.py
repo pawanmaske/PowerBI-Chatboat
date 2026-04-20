@@ -1,9 +1,9 @@
 import streamlit as st
 from openai import OpenAI
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
 st.title("Power BI Assistant 🤖")
+
+client = OpenAI(api_key="PASTE_YOUR_REAL_KEY_HERE")
 
 user_input = st.text_input("Ask your question:")
 
@@ -16,5 +16,4 @@ if user_input:
         ]
     )
 
-    st.write("### Answer:")
     st.write(response.choices[0].message.content)
