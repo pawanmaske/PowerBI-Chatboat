@@ -4,6 +4,7 @@ import requests
 st.title("Power BI Assistant 🤖")
 
 API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
+
 headers = {
     "Authorization": f"Bearer {st.secrets['HUGGINGFACE_API_KEY']}"
 }
@@ -29,4 +30,4 @@ if user_input:
                 st.write(result)
 
         except:
-            st.error("Model loading... try again ⏳")
+            st.warning("⏳ Model loading... please try again in 10 seconds")
