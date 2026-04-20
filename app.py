@@ -24,6 +24,6 @@ if user_input:
     else:
         try:
             result = response.json()
-            st.write(result[0]["generated_text"])
+            st.write(result[0].get("generated_text", "No response"))
         except:
-            st.warning("⏳ Model loading or response issue, try again")
+            st.warning("Model loading... try again ⏳")
