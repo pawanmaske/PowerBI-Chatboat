@@ -3,8 +3,7 @@ import requests
 
 st.title("Power BI Assistant 🤖")
 
-API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill"
-
+API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"
 headers = {
     "Authorization": f"Bearer {st.secrets['HUGGINGFACE_API_KEY']}"
 }
