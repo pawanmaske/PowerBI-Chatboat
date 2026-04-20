@@ -1,28 +1,20 @@
 import streamlit as st
-import requests
+from openai import OpenAI
 
-st.set_page_config(page_title="Power BI Assistant", layout="centered")
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("Power BI Assistant 🤖")
 
-# Input
 user_input = st.text_input("Ask your question:")
 
-# When user asks something
 if user_input:
-    try:
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "llama3",
-                "prompt": f"You are a Power BI expert. Answer clearly:\n{user_input}",
-                "stream": False
-            }
-        )
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a Power BI expert."},
+            {"role": "user", "content": user_input}
+        ]
+    )
 
-        result = response.json()
-        st.write("### Answer:")
-        st.write(result["response"])
-
-    except Exception as e:
-        st.error("Error connecting to Ollama. Make sure it is running.")
+    st.write("### Answer:")
+    st.write(response.choices[0].message.content)
